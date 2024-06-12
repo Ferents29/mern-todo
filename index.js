@@ -2,7 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
-const PORT = process.argv.PORT || 5000;
+const PORT = process.env.PORT || 5000;
+
+app.use(express.json({ extended: true }));
+app.use("/api/auth", require("./routes/auth.route"));
+app.use("/api/todo", require("./routes/todo.route"));
 
 const connectToDB = async () => {
     try {
