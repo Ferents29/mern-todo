@@ -1,14 +1,15 @@
 import React from 'react';
 import {Redirect, Route, Switch} from "react-router-dom";
-import MainPage from "./pages/Main Page/mainPage";
 import Login from "./pages/authPages/login";
 import Registration from "./pages/authPages/registration";
+import ActiveTodos from "./pages/ActiveTodos/activeTodos";
 
 export const useRoutes = isLogin => {
     if (isLogin){
         return (
             <Switch>
-                <Route path="/" component={MainPage} />
+                <Route path="/active-todos" component={ActiveTodos} />
+                <Route path="/calendar-events" component={() => 212121} />
                 <Redirect to="/" />
             </Switch>
         )
@@ -17,7 +18,7 @@ export const useRoutes = isLogin => {
             <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/registration" component={Registration} />
-                <Redirect to="/login" />
+                {/*<Redirect to="/login" />*/}
             </Switch>
         )
     }

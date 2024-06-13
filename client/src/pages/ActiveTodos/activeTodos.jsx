@@ -7,7 +7,7 @@ import {AuthContext} from "../../context/authContext";
 
 const { Text } = Typography;
 
-const MainPage = () => {
+const ActiveTodos = () => {
     const contentStyle = {
         textAlign: 'center',
         color: '#fff',
@@ -28,11 +28,7 @@ const MainPage = () => {
 
     const [form] = Form.useForm();
 
-    useEffect(() => {
-        getTodo();
-    }, [userId]);
-
-    const getTodo = async () => {
+    const getTodo = useCallback( async () => {
         try {
             await axios.get("/api/todo/all_todos", {
                 headers: {
@@ -45,7 +41,11 @@ const MainPage = () => {
         } catch (error) {
             console.log(error)
         }
-    }
+    },[userId, todos]);
+
+    useEffect(() => {
+        getTodo();
+    }, [userId, getTodo]);
 
     const onFinish = async values => {
         const newValues = {
@@ -77,7 +77,7 @@ const MainPage = () => {
         }catch (error) {
             console.log(error);
         }
-    },[]);
+    },[getTodo]);
 
     const onDoneTodo = useCallback(async id => {
         try {
@@ -90,7 +90,7 @@ const MainPage = () => {
         }catch (error) {
             console.log(error);
         }
-    },[]);
+    },[getTodo]);
 
     const onWarningTodo = useCallback(async id => {
         try {
@@ -103,7 +103,7 @@ const MainPage = () => {
         }catch (error) {
             console.log(error);
         }
-    },[]);
+    },[getTodo]);
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -198,4 +198,4 @@ const MainPage = () => {
     );
 };
 
-export default MainPage;
+export default ActiveTodos;
