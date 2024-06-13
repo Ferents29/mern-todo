@@ -21,23 +21,20 @@ const Nawbar = () => {
                             <a>Page 3</a>
                         </Col>
                         <div style={{display: 'flex', gap: '10px'}}>
-                            {isLogin
-                                ? <a href="/" onClick={logout}>Logout</a>
-                                : <a href="/login">Log in</a>}
-                            {!isLogin && <a href="/registration">Registration</a>}
+                            {isLogin ? (
+                                    <a href="/" onClick={logout}>Logout</a>
+                                ) : (
+                                    <>
+                                        <a href="/login">Log in</a>
+                                        <a href="/registration">Registration</a>
+                                    </>
+                                )}
                             <div style={{display:'flex',color:'green'}}>
                                 {user && user.email}
                             </div>
                         </div>
                     </Row>
                 </Header>
-                <Content
-                    style={{
-                        padding: '0 48px',
-                    }}
-                >
-                    Content
-                </Content>
             </Layout>
         </>
     );

@@ -1,0 +1,6 @@
+.link-wrapper {
+    display: flex;
+    margin-right: 30px;
+    font-size: 26px;
+    gap: 20px;
+}
