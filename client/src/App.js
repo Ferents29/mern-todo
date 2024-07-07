@@ -1,14 +1,14 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import Nawbar from "./components/Nawbar/Nawbar";
 import {BrowserRouter} from "react-router-dom";
 import './App.css';
 import {useRoutes} from "./routes";
 import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/authContext";
-import axios from "axios";
 import {usersActions} from "./redux/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import {Spin} from "antd";
+import axios from "axios";
 
 function App() {
     const dispatch = useDispatch();
@@ -17,23 +17,24 @@ function App() {
     const routes = useRoutes(isLogin);
     const { loading } = useSelector(state => state.usersReducer);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                dispatch(usersActions.getUsers());
-                const response =
-                    await axios.get("/api/auth/all_users", {
+    const getUsers = useCallback( async () => {
+        try {
+            dispatch(usersActions.getUsers());
+            await axios.get("/api/auth/all_users", {
                     headers: {
                         "Content-Type": "application/json"
                     }
-                });
+                }).then(response => {
                 dispatch(usersActions.addUsers(response.data.users));
-            } catch (error) {
-                console.log('Error:', error);
-            }
+            });
+        } catch (error) {
+            console.log('Error:', error);
         }
-        fetchData();
-    }, []);
+    },[dispatch]);
+
+    useEffect(() => {
+        getUsers();
+    }, [getUsers]);
 
   return (
       <AuthContext.Provider value={{

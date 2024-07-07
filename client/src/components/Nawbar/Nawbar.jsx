@@ -19,6 +19,7 @@ const Nawbar = () => {
                                     <a href="/">Home</a>
                                     <a href="/active-todos">Active Todos</a>
                                     <a href="/calendar-events">Calendar events</a>
+                                    <a href="/resources">Rsources</a>
                                 </>
                             )}
                         </Col>

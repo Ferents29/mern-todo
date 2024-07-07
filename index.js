@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json({ extended: true }));
 app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/todo", require("./routes/todo.route"));
+app.use("/api/calendar", require("./routes/calendar-events.route"));
+app.use("/api/resources", require("./routes/resources.route"));
 
 const connectToDB = async () => {
     try {
