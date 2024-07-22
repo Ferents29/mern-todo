@@ -23,7 +23,7 @@ const Resource = () => {
         } catch (error) {
             console.log(error)
         }
-    },[]);
+    },[dispatch, id]);
 
     useEffect(() => {
         getResource();

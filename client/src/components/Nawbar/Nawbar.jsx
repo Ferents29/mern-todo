@@ -15,12 +15,13 @@ const Nawbar = () => {
                     <Row>
                         <Col style={{marginRight: '30px'}}>
                             {isLogin && (
-                                <>
+                                <div style={{display: 'flex', gap: '20px'}}>
                                     <a href="/">Home</a>
                                     <a href="/active-todos">Active Todos</a>
                                     <a href="/calendar-events">Calendar events</a>
                                     <a href="/resources">Rsources</a>
-                                </>
+                                    <a href="/documents">Documents</a>
+                                </div>
                             )}
                         </Col>
                         <div style={{display: 'flex', gap: '10px'}}>

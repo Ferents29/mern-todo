@@ -13,6 +13,14 @@ export const resourceReducer = (state = initialState, action) => {
                 loading: false,
                 resource: action.payload,
             }
+        case 'GET_UPDATE_RESOURCE_REQUEST':
+            return { ...state, loading: true };
+        case 'GET_UPDATE_RESOURCE_SUCCESS':
+            return {
+                ...state,
+                loading: false,
+                resource: action.payload,
+            }
         default:
             return state;
     }

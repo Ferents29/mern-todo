@@ -13,6 +13,15 @@ export const resourcesReducer = (state = initialState, action) => {
                 loading: false,
                 resources: [...action.payload],
             }
+        case 'GET_DELETE_RESOURCES_REQUEST':
+            return { ...state, loading: true };
+        case 'GET_DELETE_RESOURCES_SUCCESS':
+            return {
+                ...state,
+                loading: false,
+                resources: state.resources.filter(elem =>
+                    elem._id !== action.payload),
+            }
         case 'ADD_RESOURCE_REQUEST':
             return {
                 ...state,

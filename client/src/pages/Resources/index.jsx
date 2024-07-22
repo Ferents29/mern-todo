@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Empty, Layout} from "antd";
 import TableComponent from "./Table";
 import AddResourceModal from "./AddResourceModal";
@@ -14,6 +14,10 @@ const {
 
 const Resources = () => {
     const { resources, loading } = useSelector(state => state.resourcesReducer);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [initialState, setInitialState] = useState({});
+    const [editFlag, setEditFlag] = useState(false);
+
     const dispatch = useDispatch();
 
     const headerStyle = {
@@ -64,7 +68,14 @@ const Resources = () => {
     return (
             <Layout style={layoutStyle}>
                 <Header style={headerStyle}>
-                    <AddResourceModal />
+                    <AddResourceModal
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                        initialState={initialState}
+                        editFlag={editFlag}
+                        setInitialState={setInitialState}
+                        setEditFlag={setEditFlag}
+                    />
                 </Header>
                 <Content style={contentStyle}>
                     {loading ? (
@@ -72,6 +83,9 @@ const Resources = () => {
                     ) : (
                         <TableComponent
                             resources={resources}
+                            setIsModalOpen={setIsModalOpen}
+                            setInitialState={setInitialState}
+                            setEditFlag={setEditFlag}
                         />
                     )}
                 </Content>

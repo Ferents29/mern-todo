@@ -1,15 +1,28 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Button, Checkbox, Form, Input, Modal, Select} from "antd";
 import axios from "axios";
 import {resourcesActions} from "../../../redux/actions/resourcesActions";
 import {useDispatch} from "react-redux";
+import {resourceActions} from "../../../redux/actions/resourceActions";
+
 const { Option } = Select;
 
-const AddResourceModal = () => {
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const AddResourceModal = ({ isModalOpen, setIsModalOpen, initialState, editFlag, setInitialState, setEditFlag }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
+    const {
+        _id,
+        name,
+        address,
+        age,
+        engLevel,
+        facebookLink,
+        location,
+        projects,
+        remote,
+        techLevel,
+        technologies,
+    } = initialState;
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -22,20 +35,41 @@ const AddResourceModal = () => {
     };
 
     const onFinish = async values => {
-        console.log('Success:', values);
-        try {
-            await axios.post("/api/resources/add", values, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(response => {
-                dispatch(resourcesActions.addResourceRequest(response.data));
-            });
-            form.resetFields();
-        } catch (error) {
-            console.log(error);
+        console.log(editFlag)
+        if(editFlag) {
+            try {
+                dispatch(resourceActions.getUpdateResourceRequest());
+                await axios.put(`/api/resources/update/${_id}`, values, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                }).then((response) => {
+                    dispatch(resourceActions.getUpdateResourceSuccess(response.data))
+                });
+            } catch (error) {
+                console.log(error);
+            }
+            setIsModalOpen(false);
+            setInitialState({});
+            setEditFlag(false);
+        }
+        if(!editFlag) {
+            try {
+                await axios.post("/api/resources/add", values, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(response => {
+                    dispatch(resourcesActions.addResourceRequest(response.data));
+                });
+                form.resetFields();
+            } catch (error) {
+                console.log(error);
+            }
+            setIsModalOpen(false);
         }
     };
+
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
@@ -74,7 +108,16 @@ const AddResourceModal = () => {
                         maxWidth: 600,
                     }}
                     initialValues={{
-                        remember: true,
+                        name: name,
+                        address: address,
+                        age: age,
+                        engLevel: engLevel,
+                        facebookLink: facebookLink,
+                        location: location,
+                        projects: projects,
+                        remote: remote,
+                        techLevel: techLevel,
+                        technologies: technologies,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
