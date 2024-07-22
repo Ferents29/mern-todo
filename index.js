@@ -9,6 +9,7 @@ app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/todo", require("./routes/todo.route"));
 app.use("/api/calendar", require("./routes/calendar-events.route"));
 app.use("/api/resources", require("./routes/resources.route"));
+app.use("/api/document", require("./routes/document.route"));
 
 const connectToDB = async () => {
     try {

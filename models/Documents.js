@@ -1,11 +1,10 @@
 const { Schema, model, Types } = require("mongoose");
 
 const schema = new Schema({
-    owner: {type: Types.ObjectId, ref: "User"},
-    text: String,
-    completed: Boolean,
-    important: Boolean,
-    counter: Number,
+    title: { type: String },
+    file: { type: Buffer },
+    createdAt: { type: Date, default: Date.now },
+    author: { type: Types.ObjectId, ref: 'Users' },
 })
 
-module.exports = model('Todo', schema);
+module.exports = model('Documents', schema);

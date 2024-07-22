@@ -31,8 +31,9 @@ router.post("/add", async (req, res) => {
         });
         await resources.save();
         res.json(resources);
-    }catch (error){
-        console.log(error);
+    }catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred while adding resources.");
     }
 });
 
@@ -50,6 +51,26 @@ router.get("/resource/:id",async (req, res) => {
         const resource =
             await Resources.find({_id: req.params.id});
         console.log(resource);
+        res.json(resource);
+    }catch (error) {
+        console.log(error);
+    }
+});
+
+router.delete("/delete/:id",async (req, res) => {
+    try{
+        const resources =
+            await Resources.findByIdAndDelete({_id: req.params.id});
+        res.json(resources);
+    }catch (error) {
+        console.log(error);
+    }
+});
+
+router.put("/update/:id",async (req, res) => {
+    const { body } = req;
+    try{
+        let resource = await Resources.findOneAndUpdate({_id: req.params.id}, body, { new: true });
         res.json(resource);
     }catch (error) {
         console.log(error);

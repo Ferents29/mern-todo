@@ -1,65 +1,41 @@
 const { Router } = require("express");
-const Todo = require("../models/Todo");
+const Documents = require("../models/Documents");
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const router = Router();
 
-router.post("/add", async (req, res) => {
-    const { text, userId } = req.body;
+router.post("/add", upload.single('file'), async (req, res) => {
     try{
-        const todo = new Todo({
-            text,
-            owner:userId,
-            completed:false,
-            important:false,
-            counter:0,
+        const wordDocument = req.file;
+        const newWordDocument = JSON.stringify(wordDocument);
+
+        const document = new Documents({
+            title: 'jhjhjhjhj',
+            file: newWordDocument,
         });
-        await todo.save();
-        res.json(todo);
+        await document.save();
+        res.json(document).status(201).json({ message: 'Word document uploaded successfully' });
     }catch (error){
         console.log(error);
     }
 });
 
-router.get("/all_todos",async (req, res) => {
+router.get("/documents",async (req, res) => {
     try{
-        const { userId } = req.query;
-        const todo = await Todo.find({owner: userId});
-        res.json(todo);
+        const documents = await Documents.find();
+        res.json(documents);
     }catch (error) {
         console.log(error);
     }
 });
 
-router.delete("/delete/:id",async (req, res) => {
-    try{
-        const todo = await Todo.findByIdAndDelete({_id: req.params.id});
-        res.json(todo);
-    }catch (error) {
-        console.log(error);
-    }
-});
-
-router.put("/warning/:id",async (req, res) => {
-    try{
-        console.log(req.params.id);
-        const todo = await Todo.findOne({_id: req.params.id});
-        todo.important = !todo.important;
-        await todo.save();
-        res.json(todo);
-    }catch (error) {
-        console.log(error);
-    }
-});
-
-router.put("/completed/:id",async (req, res) => {
-    try{
-        const todo = await Todo.findOne({_id: req.params.id});
-        todo.completed = !todo.completed;
-        todo.counter = todo.counter + 1;
-        await todo.save();
-        res.json(todo);
-    }catch (error) {
-        console.log(error);
+router.get('/:id', async (req, res) => {
+    try {
+        const document = await Documents.findById({_id: req.params.id});
+        res.json(document);
+    } catch (error) {
+        res.status(500).send(error);
     }
 });
 

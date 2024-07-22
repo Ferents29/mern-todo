@@ -1,7 +1,7 @@
 const { Schema, model, Types } = require("mongoose");
 
 const schema = new Schema({
-    owner: {type: Types.ObjectId, ref: "User"},
+    owner: {type: Types.ObjectId, ref: "Users"},
     text: String,
     completed: Boolean,
     important: Boolean,
