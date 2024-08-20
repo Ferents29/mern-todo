@@ -9,9 +9,8 @@ import {documentsActions} from "../../redux/actions/documentsActions";
 const Documents = () => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const [docUrl, setDocUrl] = useState('');
 
-    const { loading, documents } = useSelector(state => state.documentsReducer);
+    const { loading, documents, file } = useSelector(state => state.documentsReducer);
 
     useEffect( () => {
         dispatch(documentsActions.getDocumentsRequest());
@@ -28,17 +27,22 @@ const Documents = () => {
         setOpen(true);
     };
 
-    const handleDownload = async id => {
-        const response = await axios.get(`/api/document/${id}`, {
-            responseType: 'blob'
+    const handleDownloadDocument = async (e, elem) => {
+        e.stopPropagation();
+        dispatch(documentsActions.getDocumentIdRequest(elem._id));
+        const response = await fetch(`/api/document/download/${elem._id}`, {
+            headers: {},
         });
-
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'document.doc');
-        document.body.appendChild(link);
-        link.click();
+        if (response.status === 200) {
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = elem.name;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
     };
 
     return (
@@ -57,10 +61,10 @@ const Documents = () => {
                 {documents.map(elem => (
                     <div key={elem._id} className="document-item">
                         <div className="document-item-item">
-
+                            {elem.title}
                         </div>
                         <div>
-                            <button onClick={() => handleDownload(elem._id)}>
+                            <button onClick={(e) => handleDownloadDocument(e, elem)}>
                                 Download Document
                             </button>
                         </div>

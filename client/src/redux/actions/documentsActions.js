@@ -10,5 +10,19 @@ export const documentsActions = {
     getDocumentsError: (payload) => ({
         type: "GET_DOCUMENTS_ERROR",
         payload,
+    }),
+
+
+    getDocumentIdRequest: (payload) => ({
+        type: "GET_DOCUMENT_ID_REQUEST",
+        payload,
+    }),
+    getDocumentIdSuccess: (payload) => ({
+        type: "GET_DOCUMENT_ID_SUCCESS",
+        payload,
+    }),
+    getDocumentIdError: (payload) => ({
+        type: "GET_DOCUMENT_ID_ERROR",
+        payload,
     })
 }
